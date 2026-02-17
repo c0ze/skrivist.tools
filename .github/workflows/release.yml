@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Build plugin zip
+        run: |
+          cd calibre-plugin
+          zip -r "../skrivist-calibre-plugin-${{ steps.version.outputs.VERSION }}.zip" . \
+            -x "*.md" \
+            -x "*.pyc" \
+            -x "__pycache__/*" \
+            -x ".DS_Store" \
+            -x "images/.gitkeep"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: skrivist-calibre-plugin-${{ steps.version.outputs.VERSION }}.zip
+          generate_release_notes: true
+          name: "Skrivist Calibre Plugin ${{ steps.version.outputs.VERSION }}"
