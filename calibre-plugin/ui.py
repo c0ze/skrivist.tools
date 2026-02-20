@@ -18,7 +18,7 @@ from qt.core import QMenu, QToolButton
 # Plugin configuration stored in calibre config directory
 prefs = JSONConfig('plugins/skrivist')
 prefs.defaults['api_key'] = ''
-prefs.defaults['server_url'] = 'https://skriv.ist'
+prefs.defaults['server_url'] = 'https://api.skriv.ist'
 
 
 class SkrivistAction(InterfaceAction):
@@ -162,7 +162,7 @@ class SkrivistAction(InterfaceAction):
 
         # Upload using multipart form data
         server_url = prefs['server_url'].rstrip('/')
-        upload_url = f'{server_url}/api/v1/upload'
+        upload_url = f'{server_url}/v1/upload'
 
         # Build multipart request with random boundary
         boundary = f'----SkrivistBoundary{uuid.uuid4().hex}'

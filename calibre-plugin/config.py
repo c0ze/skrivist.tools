@@ -11,7 +11,7 @@ from calibre.utils.config import JSONConfig
 # Use same prefs as ui.py
 prefs = JSONConfig('plugins/skrivist')
 prefs.defaults['api_key'] = ''
-prefs.defaults['server_url'] = 'https://skriv.ist'
+prefs.defaults['server_url'] = 'https://api.skriv.ist'
 
 
 class ConfigWidget(QWidget):
@@ -67,7 +67,7 @@ class ConfigWidget(QWidget):
 
         server_label = QLabel('Server URL:')
         self.server_url_input = QLineEdit()
-        self.server_url_input.setPlaceholderText('https://skriv.ist')
+        self.server_url_input.setPlaceholderText('https://api.skriv.ist')
 
         server_layout.addWidget(server_label)
         server_layout.addWidget(self.server_url_input)
@@ -98,4 +98,4 @@ class ConfigWidget(QWidget):
     def save_settings(self):
         """Save settings from the form"""
         prefs['api_key'] = self.api_key_input.text().strip()
-        prefs['server_url'] = self.server_url_input.text().strip() or 'https://skriv.ist'
+        prefs['server_url'] = self.server_url_input.text().strip() or 'https://api.skriv.ist'
