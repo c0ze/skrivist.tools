@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Skrivist UI Action - Adds "Send to Skriv" button to Calibre toolbar
+Skrivist UI Action - Adds "Send to Skrivist" button to Calibre toolbar
 """
 
 import os
@@ -26,7 +26,7 @@ class SkrivistAction(InterfaceAction):
     Interface action that adds a toolbar button for sending books to Skrivist
     """
     name = 'Skrivist'
-    action_spec = ('Send to Skriv', None, 'Send selected book(s) to your Skriv.ist library', 'Ctrl+Shift+K')
+    action_spec = ('Send to Skrivist', None, 'Send selected book(s) to your Skriv.ist library', 'Ctrl+Shift+K')
     popup_type = QToolButton.ToolButtonPopupMode.InstantPopup
     action_add_menu = True
 

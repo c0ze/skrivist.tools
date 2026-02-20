@@ -36,14 +36,14 @@ Go to the [Releases page](https://github.com/c0ze/skrivist.tools/releases/latest
 4. Paste your API key into the **API Key** field
 5. Click **OK**
 
-The toolbar button **Send to Skriv** will now appear. You can also add it manually via **Preferences** > **Toolbars & menus**.
+The toolbar button **Send to Skrivist** will now appear. You can also add it manually via **Preferences** > **Toolbars & menus**.
 
 ---
 
 ## Usage
 
 1. Select one or more books in your Calibre library
-2. Click **Send to Skriv** in the toolbar (or press `Ctrl+Shift+K`)
+2. Click **Send to Skrivist** in the toolbar (or press `Ctrl+Shift+K`)
 3. Confirm if uploading multiple books
 4. Books appear in your Skriv.ist library within seconds
 
@@ -74,5 +74,5 @@ The toolbar button **Send to Skriv** will now appear. You can also add it manual
 **Book doesn't appear in library**
 → Refresh the Skriv.ist page. If the book still doesn't appear after 30 seconds, check that your cloud book quota hasn't been reached (free plan: 10 books).
 
-**"Send to Skriv" button not in toolbar**
+**"Send to Skrivist" button not in toolbar**
 → Go to **Preferences** > **Toolbars & menus** > **The main toolbar**, find **Skrivist** in the left panel and add it.
