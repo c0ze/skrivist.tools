@@ -7,6 +7,9 @@ Skrivist UI Action - Adds "Send to Skrivist" button to Calibre toolbar
 import os
 import json
 import uuid
+import threading
+import urllib.request
+import urllib.error
 from functools import partial
 
 from calibre.gui2.actions import InterfaceAction
@@ -14,6 +17,9 @@ from calibre.gui2 import error_dialog, info_dialog, question_dialog
 from calibre.utils.config import JSONConfig
 
 from qt.core import QMenu, QToolButton
+
+GITHUB_RELEASES_URL = 'https://api.github.com/repos/c0ze/skrivist.tools/releases/latest'
+RELEASES_PAGE = 'https://github.com/c0ze/skrivist.tools/releases/latest'
 
 # Plugin configuration stored in calibre config directory
 prefs = JSONConfig('plugins/skrivist')
@@ -48,6 +54,10 @@ class SkrivistAction(InterfaceAction):
 
         # Add menu items
         self.create_menu_actions()
+
+        # Check for updates silently in the background
+        t = threading.Thread(target=self._check_for_update, daemon=True)
+        t.start()
 
     def create_menu_actions(self):
         """Create the dropdown menu actions"""
@@ -204,6 +214,55 @@ class SkrivistAction(InterfaceAction):
         except urllib.error.HTTPError as e:
             error_body = e.read().decode('utf-8', errors='replace')
             raise ValueError(f'Server error {e.code}: {error_body}')
+
+    def _check_for_update(self):
+        """
+        Silently check GitHub releases for a newer plugin version.
+        Runs in a background thread — never blocks the UI.
+        Shows a one-time notification bar if a newer version is available.
+        """
+        try:
+            req = urllib.request.Request(
+                GITHUB_RELEASES_URL,
+                headers={'User-Agent': 'skrivist-calibre-plugin'}
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+
+            tag = data.get('tag_name', '')  # e.g. "v1.0.4"
+            if not tag.startswith('v'):
+                return
+
+            # Parse remote version tuple from tag, e.g. "v1.0.4" → (1, 0, 4)
+            parts = tag.lstrip('v').split('.')
+            remote = tuple(int(x) for x in parts if x.isdigit())
+
+            # Get installed version from plugin metadata
+            installed = self.interface_action_base_plugin.version  # tuple e.g. (1, 0, 4)
+
+            if remote > installed:
+                # Schedule UI notification on the main thread
+                self.gui.job_exception  # ensure gui is alive
+                from qt.core import QTimer
+                QTimer.singleShot(3000, lambda: self._show_update_notification(tag))
+
+        except Exception:
+            # Network errors, timeouts etc. — silently ignored
+            pass
+
+    def _show_update_notification(self, new_tag):
+        """Show a non-blocking update available notification."""
+        from calibre.gui2 import question_dialog
+        if question_dialog(
+            self.gui,
+            'Skrivist Plugin Update Available',
+            f'A new version of the Skrivist plugin is available: <b>{new_tag}</b><br><br>'
+            f'Download the latest release from GitHub?',
+            yes_text='Open Download Page',
+            no_text='Later'
+        ):
+            import webbrowser
+            webbrowser.open(RELEASES_PAGE)
 
     def show_configuration(self):
         """Show the configuration dialog"""
