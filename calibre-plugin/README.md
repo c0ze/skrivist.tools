@@ -1,51 +1,78 @@
 # Skrivist Calibre Plugin
 
-Send books from Calibre directly to your Skriv.ist cloud library.
+Send books from Calibre directly to your [Skriv.ist](https://skriv.ist) cloud library with one click.
 
 ## Installation
 
-1. Download `skrivist-calibre-plugin.zip`
-2. Open Calibre
-3. Go to **Preferences** > **Plugins** > **Load plugin from file**
-4. Select the downloaded zip file
-5. Restart Calibre
+### Step 1 — Download the plugin
 
-## Configuration
+Go to the [Releases page](https://github.com/c0ze/skrivist.tools/releases/latest) and download `skrivist-calibre-plugin-vX.X.X.zip`.
 
-1. Go to **Preferences** > **Plugins**
-2. Find "Skrivist" under "User interface action"
+> Do **not** unzip it — Calibre installs directly from the zip file.
+
+### Step 2 — Install in Calibre
+
+1. Open Calibre
+2. Go to **Preferences** (toolbar or `Ctrl+P`)
+3. Click **Plugins**
+4. Click **Load plugin from file** (bottom of the window)
+5. Select the downloaded `.zip` file
+6. Click **Yes** on the security warning
+7. Restart Calibre when prompted
+
+### Step 3 — Generate an API key
+
+1. Go to [skriv.ist](https://skriv.ist) and sign in
+2. Open **Settings** (gear icon, top right)
+3. Go to the **API Keys** tab
+4. Click **Generate API Key**
+5. Copy the key (it starts with `sk_...`) — you won't see it again
+
+### Step 4 — Configure the plugin
+
+1. In Calibre, go to **Preferences** > **Plugins**
+2. Find **Skrivist** under **User interface action**
 3. Click **Customize plugin**
-4. Enter your Skrivist API key (generate one at skriv.ist/settings)
+4. Paste your API key into the **API Key** field
 5. Click **OK**
+
+The toolbar button **Send to Skriv** will now appear. You can also add it manually via **Preferences** > **Toolbars & menus**.
+
+---
 
 ## Usage
 
 1. Select one or more books in your Calibre library
-2. Click the **Send to Skriv** button in the toolbar (or press `Ctrl+Shift+K`)
-3. Books will be uploaded to your Skriv.ist cloud library
+2. Click **Send to Skriv** in the toolbar (or press `Ctrl+Shift+K`)
+3. Confirm if uploading multiple books
+4. Books appear in your Skriv.ist library within seconds
+
+> **Note:** Only EPUB format is supported. Use Calibre's built-in **Convert books** feature to convert other formats to EPUB first.
+
+---
 
 ## Requirements
 
 - Calibre 5.0 or newer
 - Books must be in EPUB format
-- A Skriv.ist account with an API key
+- A [Skriv.ist](https://skriv.ist) account
+- An API key (generated in Skriv.ist settings)
 
-## Building from Source
-
-```bash
-cd calibre-plugin
-zip -r ../skrivist-calibre-plugin.zip . -x "*.md" -x "*.pyc" -x "__pycache__/*"
-```
+---
 
 ## Troubleshooting
 
 **"API Key Required" error**
-- Make sure you've configured your API key in plugin settings
+→ Go to **Preferences** > **Plugins** > **Skrivist** > **Customize plugin** and enter your API key.
 
 **"Book is not in EPUB format" error**
-- Convert your book to EPUB using Calibre's Convert feature
+→ Select the book in Calibre, click **Convert books**, set output format to EPUB, then try again.
 
-**Upload fails**
-- Check your internet connection
-- Verify your API key is valid
-- Ensure the server URL is correct (default: https://skriv.ist)
+**Upload fails / network error**
+→ Check your internet connection. If the problem persists, verify your API key is still active in Skriv.ist settings.
+
+**Book doesn't appear in library**
+→ Refresh the Skriv.ist page. If the book still doesn't appear after 30 seconds, check that your cloud book quota hasn't been reached (free plan: 10 books).
+
+**"Send to Skriv" button not in toolbar**
+→ Go to **Preferences** > **Toolbars & menus** > **The main toolbar**, find **Skrivist** in the left panel and add it.
